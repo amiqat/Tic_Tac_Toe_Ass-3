@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 public class MainActivity extends ActionBarActivity {
 
-    int player = 1;
+    int player = 0;
     Button[][] board = new Button[3][3];
     String msg = "";
     TextView disp;
