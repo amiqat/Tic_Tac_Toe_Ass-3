@@ -110,8 +110,8 @@ public class MainActivity extends ActionBarActivity {
                 for (int j = 0; j < 3; j++)
                     board[i][j].setEnabled(false);
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage("Play Again")
-                    .setTitle("Did you want play again");
+            builder.setMessage("Did you want play again")
+                    .setTitle("Play Again");
 
             // set neutral button: Exit the app message
 
