@@ -2,13 +2,12 @@ package com.example.ameen.tictactoe;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.graphics.Canvas;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -19,19 +18,7 @@ public class MainActivity extends ActionBarActivity {
     Button[][] board = new Button[3][3];
     String msg = "";
     TextView disp;
-    DrawView drawView;
 
-    private static void disable(ViewGroup layout) {
-        layout.setEnabled(false);
-        for (int i = 0; i < layout.getChildCount(); i++) {
-            View child = layout.getChildAt(i);
-            if (child instanceof ViewGroup) {
-                disable((ViewGroup) child);
-            } else {
-                child.setEnabled(false);
-            }
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,13 +34,6 @@ public class MainActivity extends ActionBarActivity {
         board[2][1] = (Button) findViewById(R.id.seven);
         board[2][2] = (Button) findViewById(R.id.eight);
         disp = (TextView) findViewById(R.id.display);
-
-        drawView = (DrawView) findViewById(R.id.draw);
-
-        Canvas canvas = new Canvas();
-
-
-        drawView.draw(canvas);
 
 
     }
@@ -78,14 +58,28 @@ public class MainActivity extends ActionBarActivity {
                 this.finish();
                 return true;
             case R.id.action_new:
-                finish();
-                startActivity(getIntent());
+                clear();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
 
 
+    }
+
+    private void clear() {
+        disp.setText("");
+        for (int i = 0; i < 3; i++)
+            for (int j = 0; j < 3; j++)
+                board[i][j].setEnabled(true);
+
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                board[i][j].setText("");
+                board[i][j].setBackgroundColor(Color.parseColor("#ffd6d7d7"));
+            }
+        }
+        player = 0;
     }
 
     public void set(View v) {
@@ -121,8 +115,7 @@ public class MainActivity extends ActionBarActivity {
                 public void onClick(DialogInterface dialog, int id) {
 
                     // go to a new activity of the app
-                    finish();
-                    startActivity(getIntent());
+                    clear();
 
 
                 }
@@ -145,28 +138,103 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public boolean isWin() {
-        if (((board[0][0].getText().toString().equals(board[0][1].getText().toString()) && board[0][1].getText().toString().equals(board[0][2].getText().toString())) && board[0][0].getText().toString().equalsIgnoreCase("x")) ||
-                ((board[1][0].getText().toString().equals(board[1][1].getText().toString()) && board[1][1].getText().toString().equals(board[1][2].getText().toString())) && board[1][0].getText().toString().equalsIgnoreCase("x")) ||
-                ((board[2][0].getText().toString().equals(board[2][1].getText().toString()) && board[2][1].getText().toString().equals(board[2][2].getText().toString())) && board[2][0].getText().toString().equalsIgnoreCase("x")) ||
-                ((board[0][0].getText().toString().equals(board[1][0].getText().toString()) && board[1][0].getText().toString().equals(board[2][0].getText().toString())) && board[0][0].getText().toString().equalsIgnoreCase("x")) ||
-                ((board[0][1].getText().toString().equals(board[1][1].getText().toString()) && board[1][1].getText().toString().equals(board[2][1].getText().toString())) && board[0][1].getText().toString().equalsIgnoreCase("x")) ||
-                ((board[0][2].getText().toString().equals(board[1][2].getText().toString()) && board[1][2].getText().toString().equals(board[2][2].getText().toString())) && board[0][2].getText().toString().equalsIgnoreCase("x")) ||
-                ((board[0][0].getText().toString().equals(board[1][1].getText().toString()) && board[1][1].getText().toString().equals(board[2][2].getText().toString())) && board[0][0].getText().toString().equalsIgnoreCase("x")) ||
-                ((board[0][2].getText().toString().equals(board[1][1].getText().toString()) && board[1][1].getText().toString().equals(board[2][0].getText().toString())) && board[0][2].getText().toString().equalsIgnoreCase("x"))) {
-
+        if ((board[0][0].getText().toString().equals(board[0][1].getText().toString()) && board[0][1].getText().toString().equals(board[0][2].getText().toString())) && board[0][0].getText().toString().equalsIgnoreCase("x")) {
             msg = "X wins";
-
+            board[0][0].setBackgroundColor(Color.RED);
+            board[0][1].setBackgroundColor(Color.RED);
+            board[0][2].setBackgroundColor(Color.RED);
+            return true;
+        } else if ((board[1][0].getText().toString().equals(board[1][1].getText().toString()) && board[1][1].getText().toString().equals(board[1][2].getText().toString())) && board[1][0].getText().toString().equalsIgnoreCase("x")) {
+            msg = "X wins";
+            board[1][0].setBackgroundColor(Color.RED);
+            board[1][1].setBackgroundColor(Color.RED);
+            board[1][2].setBackgroundColor(Color.RED);
+            return true;
+        } else if ((board[2][0].getText().toString().equals(board[2][1].getText().toString()) && board[2][1].getText().toString().equals(board[2][2].getText().toString())) && board[2][0].getText().toString().equalsIgnoreCase("x")) {
+            msg = "X wins";
+            board[2][0].setBackgroundColor(Color.RED);
+            board[2][1].setBackgroundColor(Color.RED);
+            board[2][2].setBackgroundColor(Color.RED);
+            return true;
+        } else if ((board[0][0].getText().toString().equals(board[1][0].getText().toString()) && board[1][0].getText().toString().equals(board[2][0].getText().toString())) && board[0][0].getText().toString().equalsIgnoreCase("x")) {
+            msg = "X wins";
+            board[0][0].setBackgroundColor(Color.RED);
+            board[1][0].setBackgroundColor(Color.RED);
+            board[2][0].setBackgroundColor(Color.RED);
+            return true;
+        } else if ((board[0][1].getText().toString().equals(board[1][1].getText().toString()) && board[1][1].getText().toString().equals(board[2][1].getText().toString())) && board[0][1].getText().toString().equalsIgnoreCase("x")) {
+            msg = "X wins";
+            board[0][1].setBackgroundColor(Color.RED);
+            board[1][1].setBackgroundColor(Color.RED);
+            board[2][1].setBackgroundColor(Color.RED);
+            return true;
+        } else if ((board[0][2].getText().toString().equals(board[1][2].getText().toString()) && board[1][2].getText().toString().equals(board[2][2].getText().toString())) && board[0][2].getText().toString().equalsIgnoreCase("x")) {
+            msg = "X wins";
+            board[0][2].setBackgroundColor(Color.RED);
+            board[1][2].setBackgroundColor(Color.RED);
+            board[2][2].setBackgroundColor(Color.RED);
+            return true;
+        } else if ((board[0][0].getText().toString().equals(board[1][1].getText().toString()) && board[1][1].getText().toString().equals(board[2][2].getText().toString())) && board[0][0].getText().toString().equalsIgnoreCase("x")) {
+            msg = "X wins";
+            board[0][0].setBackgroundColor(Color.RED);
+            board[1][1].setBackgroundColor(Color.RED);
+            board[2][2].setBackgroundColor(Color.RED);
+            return true;
+        } else if ((board[0][2].getText().toString().equals(board[1][1].getText().toString()) && board[1][1].getText().toString().equals(board[2][0].getText().toString())) && board[0][2].getText().toString().equalsIgnoreCase("x")) {
+            msg = "X wins";
+            board[0][2].setBackgroundColor(Color.RED);
+            board[1][1].setBackgroundColor(Color.RED);
+            board[2][0].setBackgroundColor(Color.RED);
             return true;
 
-        } else if (((board[0][0].getText().toString().equals(board[0][1].getText().toString()) && board[0][1].getText().toString().equals(board[0][2].getText().toString())) && board[0][0].getText().toString().equalsIgnoreCase("o")) ||
-                ((board[1][0].getText().toString().equals(board[1][1].getText().toString()) && board[1][1].getText().toString().equals(board[1][2].getText().toString())) && board[1][0].getText().toString().equalsIgnoreCase("o")) ||
-                ((board[2][0].getText().toString().equals(board[2][1].getText().toString()) && board[2][1].getText().toString().equals(board[2][2].getText().toString())) && board[2][0].getText().toString().equalsIgnoreCase("o")) ||
-                ((board[0][0].getText().toString().equals(board[1][0].getText().toString()) && board[1][0].getText().toString().equals(board[2][0].getText().toString())) && board[0][0].getText().toString().equalsIgnoreCase("o")) ||
-                ((board[0][1].getText().toString().equals(board[1][1].getText().toString()) && board[1][1].getText().toString().equals(board[2][1].getText().toString())) && board[0][1].getText().toString().equalsIgnoreCase("o")) ||
-                ((board[0][2].getText().toString().equals(board[1][2].getText().toString()) && board[1][2].getText().toString().equals(board[2][2].getText().toString())) && board[0][2].getText().toString().equalsIgnoreCase("o")) ||
-                ((board[0][0].getText().toString().equals(board[1][1].getText().toString()) && board[1][1].getText().toString().equals(board[2][2].getText().toString())) && board[0][0].getText().toString().equalsIgnoreCase("o")) ||
-                ((board[0][2].getText().toString().equals(board[1][1].getText().toString()) && board[1][1].getText().toString().equals(board[2][0].getText().toString())) && board[0][2].getText().toString().equalsIgnoreCase("o"))) {
+
+        } else if ((board[0][0].getText().toString().equals(board[0][1].getText().toString()) && board[0][1].getText().toString().equals(board[0][2].getText().toString())) && board[0][0].getText().toString().equalsIgnoreCase("o")) {
             msg = "O wins";
+            board[0][0].setBackgroundColor(Color.RED);
+            board[0][1].setBackgroundColor(Color.RED);
+            board[0][2].setBackgroundColor(Color.RED);
+            return true;
+        } else if ((board[1][0].getText().toString().equals(board[1][1].getText().toString()) && board[1][1].getText().toString().equals(board[1][2].getText().toString())) && board[1][0].getText().toString().equalsIgnoreCase("o")) {
+            msg = "O wins";
+            board[1][0].setBackgroundColor(Color.RED);
+            board[1][1].setBackgroundColor(Color.RED);
+            board[1][2].setBackgroundColor(Color.RED);
+            return true;
+        } else if ((board[2][0].getText().toString().equals(board[2][1].getText().toString()) && board[2][1].getText().toString().equals(board[2][2].getText().toString())) && board[2][0].getText().toString().equalsIgnoreCase("o")) {
+            msg = "O wins";
+            board[2][0].setBackgroundColor(Color.RED);
+            board[2][1].setBackgroundColor(Color.RED);
+            board[2][2].setBackgroundColor(Color.RED);
+            return true;
+        } else if ((board[0][0].getText().toString().equals(board[1][0].getText().toString()) && board[1][0].getText().toString().equals(board[2][0].getText().toString())) && board[0][0].getText().toString().equalsIgnoreCase("o")) {
+            msg = "O wins";
+            board[0][0].setBackgroundColor(Color.RED);
+            board[1][0].setBackgroundColor(Color.RED);
+            board[2][0].setBackgroundColor(Color.RED);
+            return true;
+        } else if ((board[0][1].getText().toString().equals(board[1][1].getText().toString()) && board[1][1].getText().toString().equals(board[2][1].getText().toString())) && board[0][1].getText().toString().equalsIgnoreCase("o")) {
+            msg = "O wins";
+            board[0][1].setBackgroundColor(Color.RED);
+            board[1][1].setBackgroundColor(Color.RED);
+            board[2][1].setBackgroundColor(Color.RED);
+            return true;
+        } else if ((board[0][2].getText().toString().equals(board[1][2].getText().toString()) && board[1][2].getText().toString().equals(board[2][2].getText().toString())) && board[0][2].getText().toString().equalsIgnoreCase("o")) {
+            msg = "O wins";
+            board[0][2].setBackgroundColor(Color.RED);
+            board[1][2].setBackgroundColor(Color.RED);
+            board[2][2].setBackgroundColor(Color.RED);
+            return true;
+        } else if ((board[0][0].getText().toString().equals(board[1][1].getText().toString()) && board[1][1].getText().toString().equals(board[2][2].getText().toString())) && board[0][0].getText().toString().equalsIgnoreCase("o")) {
+            msg = "O wins";
+            board[0][0].setBackgroundColor(Color.RED);
+            board[1][1].setBackgroundColor(Color.RED);
+            board[2][2].setBackgroundColor(Color.RED);
+            return true;
+        } else if ((board[0][2].getText().toString().equals(board[1][1].getText().toString()) && board[1][1].getText().toString().equals(board[2][0].getText().toString())) && board[0][2].getText().toString().equalsIgnoreCase("o")) {
+            msg = "O wins";
+            board[0][2].setBackgroundColor(Color.RED);
+            board[1][1].setBackgroundColor(Color.RED);
+            board[2][0].setBackgroundColor(Color.RED);
             return true;
         }
 
@@ -182,6 +250,5 @@ public class MainActivity extends ActionBarActivity {
                     return false;
         return true;
     }
-
 
 }
